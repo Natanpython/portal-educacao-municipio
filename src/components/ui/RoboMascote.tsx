@@ -9,12 +9,12 @@ export default function RoboMascote() {
   const [brilho, setBrilho] = useState(1);
   
   const mensagens = [
-    "Olá! 💚",
-    "Explore as matérias! 📚",
-    "Tecnologia é futuro! 🚀",
-    "Vamos aprender! 🎓",
-    "Robótica é incrível! 🤖",
-    "Inovação sempre! ✨"
+    "Olá! ",
+    "Explore as matérias! ",
+    "Tecnologia é futuro! ",
+    "Vamos aprender! ",
+    "Robótica é incrível! ",
+    "Inovação sempre! "
   ];
 
   useEffect(() => {
@@ -35,37 +35,45 @@ export default function RoboMascote() {
 
   return (
     <motion.div 
-      className="fixed bottom-8 right-8 z-50 cursor-pointer select-none"
+      className="hidden md:block fixed z-50 cursor-pointer select-none"
+      style={{
+        top: '99px',
+        right: '24px',
+      }}
       whileHover={{ scale: 1.08 }}
-      animate={{ y: [0, -12, 0] }}
-      transition={{ duration: 4, repeat: Infinity }}
+      animate={{ y: [0, -6, 0] }}
+      transition={{ duration: 3, repeat: Infinity }}
     >
+      {/* LINHA DE CONEXÃO COM O HEADER */}
+      <div className="absolute -top-4 right-1/2 w-0.5 h-4 bg-gradient-to-b from-[#f5a623]/40 to-[#f5a623]/10 pointer-events-none"></div>
+      <div className="absolute -top-4 right-1/2 w-6 h-6 border-t-2 border-r-2 border-[#f5a623]/20 rounded-tr-2xl pointer-events-none -translate-x-1/2"></div>
+
       <div 
-        className="relative bg-white p-4 rounded-2xl shadow-xl transition-all duration-300"
+        className="relative bg-[#0d5c24]/90 backdrop-blur-md p-3 rounded-2xl shadow-xl transition-all duration-300 border-2"
         style={{
-          boxShadow: `0 0 30px rgba(26, 140, 58, ${brilho * 0.15}), 0 8px 30px rgba(0,0,0,0.1)`,
-          border: `2px solid rgba(26, 140, 58, ${brilho * 0.5})`
+          borderColor: `rgba(245, 166, 35, ${brilho * 0.7})`,
+          boxShadow: `0 0 30px rgba(13, 92, 36, ${brilho * 0.3}), 0 8px 30px rgba(0,0,0,0.15)`
         }}
       >
-        {/* Efeito de brilho suave */}
+        {/* Efeito de brilho */}
         <div 
           className="absolute inset-0 rounded-2xl pointer-events-none"
           style={{
-            background: `radial-gradient(circle at 30% 20%, rgba(26, 140, 58, ${brilho * 0.06}), transparent 70%)`,
+            background: `radial-gradient(circle at 30% 20%, rgba(245, 166, 35, ${brilho * 0.1}), transparent 70%)`,
           }}
         />
         
-        {/* Antena com bolinha verde */}
+        {/* Antena com bolinha laranja */}
         <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-          <div className="w-0.5 h-5 bg-[#1a8c3a] mx-auto"></div>
+          <div className="w-0.5 h-5 bg-[#f5a623] mx-auto"></div>
           <motion.div 
-            className="w-3 h-3 bg-[#1a8c3a] rounded-full mx-auto flex items-center justify-center"
+            className="w-3 h-3 bg-[#f5a623] rounded-full mx-auto flex items-center justify-center"
             animate={{ 
               scale: [1, 1.3, 1],
               boxShadow: [
-                "0 0 10px rgba(26, 140, 58, 0.3)",
-                "0 0 25px rgba(26, 140, 58, 0.6)",
-                "0 0 10px rgba(26, 140, 58, 0.3)"
+                "0 0 10px rgba(245, 166, 35, 0.4)",
+                "0 0 25px rgba(245, 166, 35, 0.7)",
+                "0 0 10px rgba(245, 166, 35, 0.4)"
               ]
             }}
             transition={{ duration: 1.5, repeat: Infinity }}
@@ -76,28 +84,25 @@ export default function RoboMascote() {
         
         {/* Corpo do robô */}
         <div className="text-center relative">
-          {/* Ícone do robô com fundo verde claro */}
-          <div className="w-14 h-14 rounded-full bg-[#e8f5e9] mx-auto flex items-center justify-center border-2 border-[#1a8c3a]">
-            <Bot size={28} className="text-[#1a8c3a]" />
+          <div className="w-12 h-12 rounded-full bg-white/10 mx-auto flex items-center justify-center border-2 border-[#f5a623] backdrop-blur-sm">
+            <Bot size={24} className="text-[#f5a623]" />
           </div>
           
-          {/* Olhos LED */}
-          <div className="flex gap-3 justify-center mt-2">
+          <div className="flex gap-2 justify-center mt-1.5">
             <motion.div 
-              className="w-2.5 h-2.5 rounded-full bg-[#1a8c3a]"
+              className="w-2 h-2 rounded-full bg-[#f5a623]"
               animate={{ opacity: [0.6, 1, 0.6] }}
               transition={{ duration: 2, repeat: Infinity }}
             />
             <motion.div 
-              className="w-2.5 h-2.5 rounded-full bg-[#f5a623]"
+              className="w-2 h-2 rounded-full bg-[#4CAF50]"
               animate={{ opacity: [1, 0.6, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             />
           </div>
           
-          {/* Mensagem */}
           <motion.div 
-            className="text-xs text-[#1a1a2e]/70 mt-2 font-mono whitespace-nowrap bg-[#e8f5e9] px-2.5 py-1 rounded-full border border-[#1a8c3a]/20"
+            className="text-[10px] text-white/80 mt-1.5 font-mono whitespace-nowrap bg-white/10 px-2 py-0.5 rounded-full border border-[#f5a623]/30 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -107,13 +112,12 @@ export default function RoboMascote() {
         </div>
         
         {/* Conexões decorativas */}
-        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1/3 h-0.5 bg-gradient-to-r from-transparent via-[#1a8c3a]/40 to-transparent"></div>
-        <div className="absolute top-2 left-2 w-3 h-3 border-t border-l border-[#1a8c3a]/15 rounded-tl"></div>
-        <div className="absolute bottom-2 right-2 w-3 h-3 border-b border-r border-[#1a8c3a]/15 rounded-br"></div>
+        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1/3 h-0.5 bg-gradient-to-r from-transparent via-[#f5a623]/40 to-transparent"></div>
+        <div className="absolute top-1.5 left-1.5 w-2.5 h-2.5 border-t border-l border-[#f5a623]/20 rounded-tl"></div>
+        <div className="absolute bottom-1.5 right-1.5 w-2.5 h-2.5 border-b border-r border-[#f5a623]/20 rounded-br"></div>
         
-        {/* LEDs decorativos pequenos */}
-        <div className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#f5a623]/50 rounded-full animate-pulse"></div>
-        <div className="absolute bottom-1.5 left-1.5 w-1.5 h-1.5 bg-[#1a8c3a]/50 rounded-full animate-pulse delay-75"></div>
+        <div className="absolute top-1 right-1 w-1.5 h-1.5 bg-[#f5a623]/50 rounded-full animate-pulse"></div>
+        <div className="absolute bottom-1 left-1 w-1.5 h-1.5 bg-[#4CAF50]/50 rounded-full animate-pulse delay-75"></div>
       </div>
     </motion.div>
   );
