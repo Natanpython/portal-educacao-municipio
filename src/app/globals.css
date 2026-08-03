@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* CORES INSTITUCIONAIS - COM MAIS VARIEDADE */
+:root {
+  /* Verde (principal) */
+  --color-green-primary: #1a8c3a;
+  --color-green-dark: #0d5c24;
+  --color-green-light: #e8f5e9;
+  --color-green-bg: #f0f7f0;
+  
+  /* Cores de apoio */
+  --color-gold: #f5a623;
+  --color-gold-light: #fff3e0;
+  --color-pink: #ff5299;
+  --color-pink-light: #fce4ec;
+  --color-purple: #af40ff;
+  --color-purple-light: #f3e5f5;
+  --color-blue: #2196F3;
+  --color-blue-light: #e3f2fd;
+  
+  /* Neutros */
+  --color-bg-light: #f5f5f5;
+  --color-bg-white: #ffffff;
+  --color-gray-light: #e0e0e0;
+  --color-text-dark: #1a1a2e;
+  --color-text-gray: #6c757d;
+}
+
+/* FUNDOS COLORIDOS */
+.bg-tech-light {
+  background: #f5f5f5;
+}
+
+.bg-green-gradient {
+  background: linear-gradient(135deg, #1a8c3a 0%, #0d5c24 100%);
+}
+
+.bg-green-light {
+  background: #e8f5e9;
+}
+
+.bg-gold-light {
+  background: #fff3e0;
+}
+
+.bg-pink-light {
+  background: #fce4ec;
+}
+
+.bg-purple-light {
+  background: #f3e5f5;
+}
+
+.bg-blue-light {
+  background: #e3f2fd;
+}
+
+/* TEXTOS COLORIDOS */
+.text-green {
+  color: #1a8c3a;
+}
+
+.text-gold {
+  color: #f5a623;
+}
+
+.text-pink {
+  color: #ff5299;
+}
+
+.text-purple {
+  color: #af40ff;
+}
+
+.text-blue {
+  color: #2196F3;
+}
+
+.text-gradient-institutional {
+  background: linear-gradient(135deg, #1a8c3a 0%, #0d5c24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* BOTÃO VERDE (PRINCIPAL) */
+.btn-primary {
+  background: linear-gradient(135deg, #1a8c3a, #0d5c24);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(26, 140, 58, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #0d5c24, #0a4a1e);
+  box-shadow: 0 6px 25px rgba(26, 140, 58, 0.4);
+}
+
+/* BOTÃO DOURADO (SECUNDÁRIO) */
+.btn-gold {
+  background: linear-gradient(135deg, #f5a623, #e0961a);
+  color: #1a1a2e;
+  box-shadow: 0 4px 15px rgba(245, 166, 35, 0.3);
+}
+
+.btn-gold:hover {
+  background: linear-gradient(135deg, #e0961a, #c98515);
+  box-shadow: 0 6px 25px rgba(245, 166, 35, 0.4);
+}
+
+/* BOTÃO ROSA (DESTAQUE) */
+.btn-pink {
+  background: linear-gradient(135deg, #ff5299, #e6488a);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(255, 82, 153, 0.3);
+}
+
+.btn-pink:hover {
+  background: linear-gradient(135deg, #e6488a, #cc3d7a);
+}
+
+/* BOTÃO ROXO (ESPECIAL) */
+.btn-purple {
+  background: linear-gradient(135deg, #af40ff, #9a35e6);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(175, 64, 255, 0.3);
+}
+
+.btn-purple:hover {
+  background: linear-gradient(135deg, #9a35e6, #852acc);
+}
+
+/* BORDAS */
+.border-green {
+  border-color: #1a8c3a;
+}
+
+.border-gold {
+  border-color: #f5a623;
+}
+
+.border-pink {
+  border-color: #ff5299;
+}
+
+.border-purple {
+  border-color: #af40ff;
+}
+
+/* GLOWS */
+.glow-green {
+  box-shadow: 0 0 30px rgba(26, 140, 58, 0.2);
+}
+
+.glow-gold {
+  box-shadow: 0 0 30px rgba(245, 166, 35, 0.2);
+}
+
+.glow-pink {
+  box-shadow: 0 0 30px rgba(255, 82, 153, 0.2);
+}
+
+/* Animações existentes */
+@keyframes scan {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-scan {
+  animation: scan 2s linear infinite;
+}
+
+@keyframes spin-slow {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.animate-spin-slow.reverse {
+  animation-direction: reverse;
+  animation-duration: 25s;
+}

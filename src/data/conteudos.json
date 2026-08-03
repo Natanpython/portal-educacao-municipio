@@ -1,0 +1,59 @@
+{
+  "conteudos": [
+    {
+      "id": "1",
+      "materiaSlug": "portugues",
+      "titulo": "Interpretação de Textos",
+      "descricao": "Material completo com técnicas de interpretação e 20 exercícios",
+      "arquivo": "interpretacao-textos.pdf",
+      "data": "2026-01-15",
+      "tags": ["leitura", "interpretação", "ENEM"]
+    },
+    {
+      "id": "2",
+      "materiaSlug": "portugues",
+      "titulo": "Redação Nota 1000",
+      "descricao": "Estrutura, dicas e modelos de redação para o ENEM",
+      "arquivo": "redacao-nota1000.pdf",
+      "data": "2026-01-20",
+      "tags": ["redação", "ENEM", "argumentação"]
+    },
+    {
+      "id": "3",
+      "materiaSlug": "matematica",
+      "titulo": "Funções Exponenciais",
+      "descricao": "Teoria, exemplos e 30 exercícios resolvidos",
+      "arquivo": "funcoes-exponenciais.pdf",
+      "data": "2026-01-18",
+      "tags": ["funções", "exponencial", "álgebra"]
+    },
+    {
+      "id": "4",
+      "materiaSlug": "matematica",
+      "titulo": "Geometria Analítica",
+      "descricao": "Pontos, retas e circunferências no plano cartesiano",
+      "arquivo": "geometria-analitica.pdf",
+      "data": "2026-01-22",
+      "tags": ["geometria", "plano cartesiano", "reta"]
+    },
+      {
+      "id": "5",
+      "materiaSlug": "portugues",
+      "titulo": "Gramática Básica",
+      "descricao": "Regras essenciais da língua portuguesa com exercícios",
+      "arquivo": "gramatica-basica.pdf",
+      "data": "2026-02-01",
+      "tags": ["gramática", "português", "básico"]
+    },
+    {
+      "id": "6",
+      "materiaSlug": "ciencias",
+      "titulo": "Química Orgânica",
+      "descricao": "Principais compostos orgânicos e suas reações",
+      "arquivo": "quimica-organica.pdf",
+      "data": "2026-01-25",
+      "tags": ["química", "orgânica", "reações"]
+    }
+  ]
+  
+}

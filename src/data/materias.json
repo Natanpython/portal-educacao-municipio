@@ -1,0 +1,58 @@
+{
+  "materias": [
+    {
+      "id": "portugues",
+      "nome": "Português",
+      "slug": "portugues",
+      "icone": "BookOpen",
+      "cor": "#4F46E5",
+      "descricao": "Língua portuguesa, literatura e redação",
+      "quantidade": 12
+    },
+    {
+      "id": "matematica",
+      "nome": "Matemática",
+      "slug": "matematica",
+      "icone": "Calculator",
+      "cor": "#DC2626",
+      "descricao": "Álgebra, geometria e raciocínio lógico",
+      "quantidade": 10
+    },
+    {
+      "id": "ciencias",
+      "nome": "Ciências",
+      "slug": "ciencias",
+      "icone": "Microscope",
+      "cor": "#16A34A",
+      "descricao": "Biologia, física e química",
+      "quantidade": 8
+    },
+    {
+      "id": "historia",
+      "nome": "História",
+      "slug": "historia",
+      "icone": "ScrollText",
+      "cor": "#D97706",
+      "descricao": "História do Brasil e do mundo",
+      "quantidade": 6
+    },
+    {
+      "id": "geografia",
+      "nome": "Geografia",
+      "slug": "geografia",
+      "icone": "Globe",
+      "cor": "#059669",
+      "descricao": "Geopolítica, climas e cartografia",
+      "quantidade": 7
+    },
+    {
+      "id": "artes",
+      "nome": "Artes",
+      "slug": "artes",
+      "icone": "Palette",
+      "cor": "#7C3AED",
+      "descricao": "Música, teatro e artes visuais",
+      "quantidade": 5
+    }
+  ]
+}
