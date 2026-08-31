@@ -47,7 +47,7 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg md:text-xl text-gray-600 max-w-2xl mt-6"
           >
-            Acesse materiais didáticos inovadores produzidos pelos professores da rede municipal.
+            Acesse materiais didáticos produzidos pelos professores da rede municipal.
           </motion.p>
 
           <motion.div
@@ -59,7 +59,7 @@ export default function Hero() {
             <Link href="/materias">
               <button className="px-8 py-4 rounded-2xl bg-[#1a8c3a] text-white font-semibold shadow-lg shadow-[#1a8c3a]/30 hover:shadow-xl hover:shadow-[#1a8c3a]/40 transition-all flex items-center gap-2 group hover:bg-[#0d5c24]">
                 <BookOpen size={20} />
-                Explorar Matérias
+                Explorar Atividades
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </button>
             </Link>
