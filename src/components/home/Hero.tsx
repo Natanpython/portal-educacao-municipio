@@ -2,11 +2,11 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, GraduationCap, BookOpen, Users, Sparkles, Zap } from "lucide-react";
+import { ArrowRight, BookOpen, Sparkles, Zap } from "lucide-react";
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[#f5f5f5] via-white to-[#e8f5e9] pt-24 min-h-[90vh] flex items-center">
+    <section className="relative overflow-hidden bg-gradient-to-br from-[#f5f5f5] via-white to-[#e8f5e9] min-h-[calc(90vh-4rem)] flex items-center">
       {/* Elementos decorativos */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-20 w-72 h-72 bg-[#1a8c3a]/5 rounded-full blur-3xl"></div>
@@ -14,7 +14,7 @@ export default function Hero() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-[#1a8c3a]/5 rounded-full"></div>
       </div>
 
-      <div className="container mx-auto px-4 py-20 relative z-10">
+      <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
         <div className="flex flex-col items-center text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

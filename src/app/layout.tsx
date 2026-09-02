@@ -3,8 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import RoboMascote from "@/components/ui/RoboMascote";
-import BotaoFormulario from "@/components/ui/BotaoFormulario";
+import AssistentePortal from "@/components/ui/AssistentePortal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,10 +21,9 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className={inter.className}>
         <Header />
-        <main className="min-h-screen pt-20">{children}</main>
+        <main className="min-h-screen pt-16 md:pt-20">{children}</main>
         <Footer />
-        <RoboMascote />
-        <BotaoFormulario /> {/* ← BOTÃO DO FORMULÁRIO */}
+        <AssistentePortal />
       </body>
     </html>
   );

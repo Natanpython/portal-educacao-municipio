@@ -1,0 +1,19 @@
+{
+  "instituicao": "Secretaria Municipal de Educação",
+  "municipio": "Município",
+  "descricao": "Estamos à disposição para orientar alunos, responsáveis, professores e toda a comunidade escolar.",
+  "email": "contato@educacao.municipio.br",
+  "telefone": "(44) 1234-5678",
+  "telefoneLink": "+554412345678",
+  "whatsapp": "(44) 99999-9999",
+  "whatsappLink": "5544999999999",
+  "endereco": "Endereço da Secretaria Municipal de Educação",
+  "cidade": "Município - PR",
+  "horarios": [
+    {
+      "dias": "Segunda a sexta-feira",
+      "periodo": "08h às 12h e 13h30 às 17h30"
+    }
+  ],
+  "observacao": "Os dados desta página são provisórios e podem ser atualizados no arquivo de contato do portal."
+}

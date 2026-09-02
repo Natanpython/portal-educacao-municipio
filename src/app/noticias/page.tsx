@@ -17,7 +17,7 @@ export default async function NoticiaPage({
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] pt-24">
+    <div className="min-h-screen bg-[#f5f5f5]">
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         {/* Botão voltar */}
         <Link

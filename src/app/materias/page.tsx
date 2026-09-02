@@ -4,7 +4,7 @@ import { BookOpen, Sparkles, Zap } from "lucide-react";
 
 export default function MateriasPage() {
   return (
-    <div className="relative min-h-screen bg-[#f8f9fa] overflow-hidden pt-24">
+    <div className="relative min-h-screen bg-[#f8f9fa] overflow-hidden">
       {/* Elementos decorativos */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-20 w-72 h-72 bg-[#ffc300]/5 rounded-full blur-3xl"></div>

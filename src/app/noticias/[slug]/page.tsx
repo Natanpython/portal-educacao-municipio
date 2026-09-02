@@ -23,7 +23,7 @@ export default function NoticiaPage({
 
   if (!slug) {
     return (
-      <div className="min-h-screen bg-[#f5f5f5] pt-24 flex items-center justify-center">
+      <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1a8c3a] mx-auto"></div>
           <p className="text-gray-500 mt-4">Carregando...</p>
@@ -49,7 +49,7 @@ export default function NoticiaPage({
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] pt-24">
+    <div className="min-h-screen bg-[#f5f5f5]">
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         {/* Botão voltar */}
         <Link

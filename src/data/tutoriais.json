@@ -1,0 +1,99 @@
+{
+  "cursos": [
+    {
+      "id": "robotica-educacional",
+      "slug": "robotica-educacional",
+      "titulo": "Robótica Educacional",
+      "descricao": "Aprenda os fundamentos da robótica e conheça os componentes usados nas oficinas da rede municipal.",
+      "categoria": "Tecnologia",
+      "nivel": "Iniciante",
+      "cor": "#1a8c3a",
+      "icone": "Bot",
+      "destaque": true,
+      "aulas": [
+        {
+          "id": "1",
+          "titulo": "Conhecendo a robótica educacional",
+          "descricao": "Uma introdução ao curso, aos projetos e aos principais componentes de um robô.",
+          "duracao": "06:35",
+          "youtubeId": "M7lc1UVf-VE"
+        },
+        {
+          "id": "2",
+          "titulo": "Sensores, motores e controladores",
+          "descricao": "Entenda como cada componente participa da montagem e do funcionamento do projeto.",
+          "duracao": "Em breve",
+          "youtubeId": ""
+        },
+        {
+          "id": "3",
+          "titulo": "Montando o primeiro projeto",
+          "descricao": "Organização das peças e primeiros passos para criar um protótipo funcional.",
+          "duracao": "Em breve",
+          "youtubeId": ""
+        }
+      ]
+    },
+    {
+      "id": "programacao-criativa",
+      "slug": "programacao-criativa",
+      "titulo": "Programação Criativa",
+      "descricao": "Desenvolva raciocínio lógico criando animações, histórias e pequenos jogos educacionais.",
+      "categoria": "Programação",
+      "nivel": "Iniciante",
+      "cor": "#2196F3",
+      "icone": "Code2",
+      "destaque": true,
+      "aulas": [
+        {
+          "id": "1",
+          "titulo": "O que é programação?",
+          "descricao": "Conceitos básicos de sequência, comandos e pensamento computacional.",
+          "duracao": "Em breve",
+          "youtubeId": ""
+        },
+        {
+          "id": "2",
+          "titulo": "Criando sua primeira animação",
+          "descricao": "Aplicação prática dos primeiros comandos em um projeto visual.",
+          "duracao": "Em breve",
+          "youtubeId": ""
+        },
+        {
+          "id": "3",
+          "titulo": "Desafio de lógica",
+          "descricao": "Resolva um desafio utilizando eventos, condições e repetição.",
+          "duracao": "Em breve",
+          "youtubeId": ""
+        }
+      ]
+    },
+    {
+      "id": "ferramentas-digitais",
+      "slug": "ferramentas-digitais",
+      "titulo": "Ferramentas Digitais para Educadores",
+      "descricao": "Recursos práticos para preparar aulas, organizar atividades e tornar o aprendizado mais interativo.",
+      "categoria": "Formação",
+      "nivel": "Básico",
+      "cor": "#f5a623",
+      "icone": "GraduationCap",
+      "destaque": false,
+      "aulas": [
+        {
+          "id": "1",
+          "titulo": "Organizando materiais digitais",
+          "descricao": "Boas práticas para armazenar, nomear e compartilhar materiais com as turmas.",
+          "duracao": "Em breve",
+          "youtubeId": ""
+        },
+        {
+          "id": "2",
+          "titulo": "Atividades mais interativas",
+          "descricao": "Ideias para combinar recursos digitais e metodologias ativas.",
+          "duracao": "Em breve",
+          "youtubeId": ""
+        }
+      ]
+    }
+  ]
+}

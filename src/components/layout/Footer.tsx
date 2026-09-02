@@ -1,4 +1,5 @@
-import { GraduationCap, Heart, Mail, MapPin, Phone, Globe, Share2, Link2, BookOpen, Sparkles, Bot } from "lucide-react";
+import { Heart, Mail, MapPin, Phone, Globe, Share2, Link2, BookOpen, Sparkles, Bot } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
@@ -13,29 +14,21 @@ export default function Footer() {
 
       <div className="container mx-auto px-4 py-16 relative">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-          {/* Coluna 1 - Logo e descrição */}
-          <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative">
-                <div className="absolute inset-0 bg-[#f5a623]/20 blur-xl rounded-full opacity-30 group-hover:opacity-50 transition-opacity"></div>
-                <GraduationCap size={28} className="text-[#f5a623] relative z-10 group-hover:rotate-6 transition-transform duration-300" />
-              </div>
-              <span className="text-xl font-bold text-white tracking-tight">
-                Edu<span className="text-[#f5a623]">Portal</span>
-              </span>
+          {/* Coluna 1 - Identidade do município */}
+          <div className="flex items-start justify-start">
+            <Link
+              href="/"
+              aria-label="Ir para a página inicial"
+              className="group relative block h-48 w-full max-w-[230px] transition-transform duration-300 hover:-translate-y-1"
+            >
+              <Image
+                src="/images/logo-principal-footer.png"
+                alt="Prefeitura de Bayeux - Secretaria Municipal de Educação"
+                fill
+                sizes="230px"
+                className="object-contain drop-shadow-[0_5px_8px_rgba(0,0,0,0.3)] transition-transform duration-300 group-hover:scale-[1.03]"
+              />
             </Link>
-            
-            <p className="text-white/70 text-sm max-w-xs leading-relaxed">
-              Materiais didáticos inovadores produzidos pelos professores da rede municipal.
-            </p>
-            
-            <div className="flex items-center gap-3 text-xs">
-              <span className="text-[#f5a623] font-mono">SECRETARIA</span>
-              <span className="w-px h-3 bg-[#f5a623]/30"></span>
-              <span className="text-white/40 font-mono">v2.0.0</span>
-              <span className="w-px h-3 bg-[#f5a623]/30"></span>
-              <Bot size={12} className="text-[#f5a623]" />
-            </div>
           </div>
 
           {/* Coluna 2 - Links Rápidos */}
@@ -58,9 +51,9 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/sobre" className="text-white/70 hover:text-[#f5a623] transition-colors flex items-center gap-2 group">
+                <Link href="/tutoriais" className="text-white/70 hover:text-[#f5a623] transition-colors flex items-center gap-2 group">
                   <span className="w-0 h-px bg-[#f5a623] group-hover:w-4 transition-all duration-300"></span>
-                  Sobre
+                  Tutoriais
                 </Link>
               </li>
               <li>
@@ -72,38 +65,24 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Coluna 3 - Matérias */}
-          <div>
-            <h4 className="text-white font-semibold mb-4 flex items-center gap-2">
-              <span className="w-1 h-4 bg-[#f5a623] rounded-full"></span>
-              Matérias
-            </h4>
-            <ul className="space-y-3">
-              <li>
-                <Link href="/conteudos?materia=portugues" className="text-white/70 hover:text-[#f5a623] transition-colors flex items-center gap-2 group">
-                  <span className="w-0 h-px bg-[#f5a623] group-hover:w-4 transition-all duration-300"></span>
-                  Português
-                </Link>
-              </li>
-              <li>
-                <Link href="/conteudos?materia=matematica" className="text-white/70 hover:text-[#f5a623] transition-colors flex items-center gap-2 group">
-                  <span className="w-0 h-px bg-[#f5a623] group-hover:w-4 transition-all duration-300"></span>
-                  Matemática
-                </Link>
-              </li>
-              <li>
-                <Link href="/conteudos?materia=ciencias" className="text-white/70 hover:text-[#f5a623] transition-colors flex items-center gap-2 group">
-                  <span className="w-0 h-px bg-[#f5a623] group-hover:w-4 transition-all duration-300"></span>
-                  Ciências
-                </Link>
-              </li>
-              <li>
-                <Link href="/conteudos?materia=historia" className="text-white/70 hover:text-[#f5a623] transition-colors flex items-center gap-2 group">
-                  <span className="w-0 h-px bg-[#f5a623] group-hover:w-4 transition-all duration-300"></span>
-                  História
-                </Link>
-              </li>
-            </ul>
+          {/* Coluna 3 - Apresentação */}
+          <div className="space-y-4">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#f5a623]/20 bg-white/5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#f5a623]">
+              <BookOpen size={14} />
+              Educação municipal
+            </div>
+
+            <p className="text-white/70 text-sm max-w-xs leading-relaxed">
+              Materiais didáticos inovadores produzidos pelos professores da rede municipal.
+            </p>
+
+            <div className="flex items-center gap-3 text-xs">
+              <span className="text-[#f5a623] font-mono">SECRETARIA</span>
+              <span className="w-px h-3 bg-[#f5a623]/30"></span>
+              <span className="text-white/40 font-mono">v2.0.0</span>
+              <span className="w-px h-3 bg-[#f5a623]/30"></span>
+              <Bot size={12} className="text-[#f5a623]" />
+            </div>
           </div>
 
           {/* Coluna 4 - Contato */}
@@ -160,7 +139,7 @@ export default function Footer() {
             <div className="px-4 bg-[#0d5c24]">
               <div className="flex items-center gap-2 text-[#f5a623]/40">
                 <BookOpen size={14} />
-                <span className="text-xs font-mono text-[#f5a623]/60">// SECRETARIA DE EDUCAÇÃO</span>
+                <span className="text-xs font-mono text-[#f5a623]/60">{"// SECRETARIA DE EDUCAÇÃO"}</span>
                 <Sparkles size={12} className="text-[#f5a623]/40" />
               </div>
             </div>
@@ -170,7 +149,7 @@ export default function Footer() {
         {/* FOOTER INFERIOR */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
           <p className="text-white/40 flex items-center gap-2">
-            © 2026 EduPortal. Todos os direitos reservados.
+            © 2026 Secretaria Municipal de Educação. Todos os direitos reservados.
             <span className="hidden md:inline w-px h-4 bg-[#f5a623]/30"></span>
             <span className="text-[#f5a623]/40 text-xs font-mono hidden md:inline">v2.0.0</span>
           </p>

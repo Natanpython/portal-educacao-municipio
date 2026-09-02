@@ -2,7 +2,7 @@ import GridConteudos from "@/components/materias/GridConteudos";
 import materiasData from "@/data/materias.json";
 import conteudosData from "@/data/conteudos.json";
 import Link from "next/link";
-import { ArrowLeft, BookOpen, Sparkles, Download } from "lucide-react";
+import { ArrowLeft, Download } from "lucide-react";
 
 const iconMap: Record<string, string> = {
   portugues: "📚",
@@ -28,7 +28,7 @@ export default async function ConteudosPage({
 
   if (!materia) {
     return (
-      <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center pt-24">
+      <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-[#1a1a2e]">Matéria não encontrada</h1>
           <Link href="/materias" className="text-[#1a8c3a] hover:text-[#0d5c24] mt-4 inline-block font-medium">
@@ -40,7 +40,7 @@ export default async function ConteudosPage({
   }
 
   return (
-    <div className="relative min-h-screen bg-[#f5f5f5] overflow-hidden pt-24">
+    <div className="relative min-h-screen bg-[#f5f5f5] overflow-hidden">
       {/* Elementos decorativos */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div 
