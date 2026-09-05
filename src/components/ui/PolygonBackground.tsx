@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 
 interface Polygon {
   x: number;
@@ -126,6 +125,8 @@ export default function PolygonBackground() {
     }
 
     // Animação
+    let animationId: number;
+
     function animate() {
       if (!ctx) return;
       
@@ -147,7 +148,7 @@ export default function PolygonBackground() {
       });
 
       drawConnections();
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
     }
 
     animate();
@@ -160,7 +161,10 @@ export default function PolygonBackground() {
     };
 
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      cancelAnimationFrame(animationId);
+    };
   }, []);
 
   return (

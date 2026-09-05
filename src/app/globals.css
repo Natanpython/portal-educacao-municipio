@@ -194,3 +194,51 @@
   animation-direction: reverse;
   animation-duration: 25s;
 }
+
+/* Áudio posicionado pelas medidas reais do botão oficial do VLibras. */
+.portal-audio-access {
+  position: fixed;
+  z-index: 2147483646;
+  top: calc(50% + 23px);
+  right: 10px;
+  width: 40px;
+}
+
+.portal-audio-button {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  color: #ffffff;
+  background: #2a80e2;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.24);
+  transition: background 180ms ease, filter 180ms ease;
+}
+
+.portal-audio-button:hover,
+.portal-audio-button:focus-visible,
+.portal-audio-button.is-active {
+  background: #1c579b;
+  filter: brightness(1.08);
+}
+
+.portal-audio-button:focus-visible {
+  outline: 3px solid #f5a623;
+  outline-offset: 2px;
+}
+
+.a11y-reading-target {
+  border-radius: 0.2rem;
+  outline: 3px solid rgba(245, 166, 35, 0.82);
+  outline-offset: 3px;
+  background-color: rgba(255, 243, 224, 0.22);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-audio-button {
+    transition: none;
+  }
+}

@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, BookOpenCheck, GraduationCap, PlayCircle } from "lucide-react";
+import { ArrowLeft, BookOpenCheck, Bot, Code2, GraduationCap, PlayCircle, Sparkles } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import PlayerCurso from "@/components/tutoriais/PlayerCurso";
 import tutoriaisData from "@/data/tutoriais.json";
 
 type Props = PageProps<"/tutoriais/[slug]">;
+
+const icones: Record<string, LucideIcon> = { Bot, Code2, GraduationCap };
 
 export function generateStaticParams() {
   return tutoriaisData.cursos.map((curso) => ({ slug: curso.slug }));
@@ -28,6 +31,8 @@ export default async function CursoPage({ params }: Props) {
   const curso = tutoriaisData.cursos.find((item) => item.slug === slug);
 
   if (!curso) notFound();
+  const Icone = icones[curso.icone] ?? GraduationCap;
+  const aulasDisponiveis = curso.aulas.filter((aula) => aula.youtubeId).length;
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#f5f5f5]">
@@ -47,13 +52,16 @@ export default async function CursoPage({ params }: Props) {
           Voltar para os tutoriais
         </Link>
 
-        <header className="mb-8 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm md:p-8">
+        <header className="relative mb-8 overflow-hidden rounded-[1.6rem] border bg-white p-6 shadow-sm md:p-8" style={{ borderColor: `${curso.cor}30` }}>
+          <span className="absolute inset-x-0 top-0 h-1" style={{ background: `linear-gradient(90deg, ${curso.cor}, ${curso.cor}88, #f5a623)` }} />
+          <span className="absolute -right-20 -top-24 h-64 w-64 rounded-full opacity-70" style={{ background: `radial-gradient(circle, ${curso.cor}18, transparent 68%)` }} />
           <div className="flex flex-col gap-5 md:flex-row md:items-center">
             <div
-              className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl"
+              className="relative flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl"
               style={{ color: curso.cor, backgroundColor: `${curso.cor}15` }}
             >
-              <GraduationCap size={34} />
+              <Icone size={38} />
+              <span className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full bg-white text-[#f5a623] shadow-md"><Sparkles size={13} /></span>
             </div>
             <div className="flex-1">
               <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">
@@ -66,7 +74,7 @@ export default async function CursoPage({ params }: Props) {
             <div className="flex shrink-0 gap-4 rounded-xl bg-[#f8f9fa] px-5 py-3 text-sm text-gray-500">
               <span className="flex items-center gap-1.5">
                 <PlayCircle size={16} className="text-[#f5a623]" />
-                {curso.aulas.length} aulas
+                {aulasDisponiveis}/{curso.aulas.length} aulas
               </span>
               <span className="flex items-center gap-1.5">
                 <BookOpenCheck size={16} className="text-[#1a8c3a]" />
@@ -76,7 +84,7 @@ export default async function CursoPage({ params }: Props) {
           </div>
         </header>
 
-        <PlayerCurso aulas={curso.aulas} />
+        <PlayerCurso aulas={curso.aulas} cor={curso.cor} />
       </div>
     </div>
   );

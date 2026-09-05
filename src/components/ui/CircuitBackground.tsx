@@ -129,7 +129,6 @@ export default function CircuitBackground() {
         ctx.beginPath();
         ctx.moveTo(points[0].x, points[0].y);
         for (let i = 1; i < totalLength; i++) {
-          const prev = points[i - 1];
           const curr = points[i];
           ctx.lineTo(curr.x, curr.y);
         }
@@ -143,7 +142,6 @@ export default function CircuitBackground() {
         ctx.beginPath();
         ctx.moveTo(points[0].x, points[0].y);
         for (let i = 1; i < totalLength; i++) {
-          const prev = points[i - 1];
           const curr = points[i];
           ctx.lineTo(curr.x, curr.y);
         }

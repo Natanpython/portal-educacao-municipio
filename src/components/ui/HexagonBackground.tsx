@@ -68,7 +68,7 @@ export default function HexagonBackground() {
     function drawHexagon(hex: Hexagon, time: number) {
       if (!ctx) return;
 
-      const { x, y, size, rotation, color, opacity, pulse } = hex;
+      const { x, y, size, rotation, color, pulse } = hex;
 
       // Efeito pulsante
       const pulseFactor = 0.8 + 0.2 * Math.sin(time * 0.001 + pulse);

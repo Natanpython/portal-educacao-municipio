@@ -1,123 +1,69 @@
-import noticiasData from "@/data/noticias.json";
-import { notFound } from "next/navigation";
-import Link from "next/link";
+import type { Metadata } from "next";
 import Image from "next/image";
-import { ArrowLeft, Calendar, Tag, Share2, BookOpen } from "lucide-react";
+import Link from "next/link";
+import { ArrowLeft, ArrowRight, Calendar, Newspaper } from "lucide-react";
+import noticiasData from "@/data/noticias.json";
 
-export default async function NoticiaPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
-  const noticia = noticiasData.noticias.find((n) => n.slug === slug);
+export const metadata: Metadata = {
+  title: "Notícias | EduPortal",
+  description: "Notícias e novidades da rede municipal de educação.",
+};
 
-  if (!noticia) {
-    notFound();
-  }
+export default function NoticiasPage() {
+  const noticias = [...noticiasData.noticias].sort(
+    (a, b) => new Date(b.data).getTime() - new Date(a.data).getTime(),
+  );
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5]">
-      <div className="container mx-auto px-4 py-12 max-w-4xl">
-        {/* Botão voltar */}
-        <Link
-          href="/#noticias"
-          className="inline-flex items-center gap-2 text-gray-500 hover:text-[#1a8c3a] transition-colors mb-6 group"
-        >
-          <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-          <span className="text-sm font-medium">Voltar para o início</span>
+    <main className="min-h-screen bg-[#f5f5f5]">
+      <div className="container mx-auto max-w-6xl px-4 py-12">
+        <Link href="/" className="group mb-7 inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition-colors hover:text-[#1a8c3a]">
+          <ArrowLeft size={18} className="transition-transform group-hover:-translate-x-1" />
+          Voltar para o início
         </Link>
 
-        {/* Card da notícia */}
-        <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200">
-          {/* Imagem com overlay */}
-          <div className="relative h-72 md:h-96">
-            <Image
-              src={`/images/noticias/${noticia.imagem}`}
-              alt={noticia.titulo}
-              width={800}
-              height={400}
-              className="w-full h-full object-cover"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-            {noticia.destaque && (
-              <span className="absolute top-4 right-4 bg-[#f5a623] text-white text-xs font-bold px-3 py-1.5 rounded-full">
-                Destaque
-              </span>
-            )}
-            <div className="absolute bottom-4 left-4 text-white">
-              <span className="flex items-center gap-2 text-sm bg-black/30 px-3 py-1.5 rounded-full backdrop-blur-sm">
-                <Calendar size={14} />
-                {new Date(noticia.data).toLocaleDateString('pt-BR', {
-                  day: '2-digit',
-                  month: 'long',
-                  year: 'numeric'
-                })}
-              </span>
-            </div>
-          </div>
+        <header className="mb-10">
+          <span className="inline-flex items-center gap-2 rounded-full bg-[#e8f5e9] px-3 py-1.5 text-sm font-semibold text-[#1a8c3a]">
+            <Newspaper size={16} /> Notícias
+          </span>
+          <h1 className="mt-4 text-3xl font-bold text-[#1a1a2e] md:text-4xl">Acontece na educação municipal</h1>
+          <p className="mt-2 max-w-2xl text-gray-500">Acompanhe projetos, eventos e conquistas da nossa comunidade escolar.</p>
+        </header>
 
-          {/* Conteúdo */}
-          <div className="p-6 md:p-8">
-            {/* Tags */}
-            <div className="flex flex-wrap gap-2 mb-4">
-              {noticia.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs bg-[#e8f5e9] text-[#1a8c3a] px-3 py-1 rounded-full flex items-center gap-1 border border-[#1a8c3a]/10"
-                >
-                  <Tag size={12} />
-                  {tag}
-                </span>
-              ))}
-            </div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {noticias.map((noticia) => (
+            <article key={noticia.id} className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
+              <Link href={`/noticias/${noticia.slug}`} className="block h-full">
+                <div className="relative h-52 overflow-hidden">
+                  <Image
+                    src={`/images/noticias/${noticia.imagem}`}
+                    alt={noticia.titulo}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  {noticia.destaque && (
+                    <span className="absolute right-3 top-3 rounded-full bg-[#f5a623] px-3 py-1 text-xs font-bold text-white">Destaque</span>
+                  )}
+                </div>
 
-            {/* Título */}
-            <h1 className="text-2xl md:text-4xl font-bold text-[#1a1a2e] mb-4">
-              {noticia.titulo}
-            </h1>
-
-            {/* Texto completo */}
-            <div className="text-gray-600 text-base md:text-lg leading-relaxed space-y-4">
-              <p>{noticia.texto}</p>
-            </div>
-
-            {/* Footer da notícia */}
-            <div className="mt-8 pt-6 border-t border-gray-200 flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-4 text-sm text-gray-500">
-                <span className="flex items-center gap-1.5">
-                  <BookOpen size={16} />
-                  Secretaria de Educação
-                </span>
-                <span className="w-px h-4 bg-gray-300"></span>
-                <span className="flex items-center gap-1.5">
-                  <Calendar size={16} />
-                  {new Date(noticia.data).toLocaleDateString('pt-BR')}
-                </span>
-              </div>
-              <button
-                onClick={() => {
-                  if (navigator.share) {
-                    navigator.share({
-                      title: noticia.titulo,
-                      text: noticia.resumo,
-                      url: window.location.href,
-                    });
-                  } else {
-                    navigator.clipboard.writeText(window.location.href);
-                    alert('Link copiado para a área de transferência!');
-                  }
-                }}
-                className="inline-flex items-center gap-2 text-sm font-medium text-[#1a8c3a] hover:text-[#0d5c24] transition-colors bg-[#e8f5e9] px-4 py-2 rounded-full hover:bg-[#c8e6c9]"
-              >
-                <Share2 size={16} />
-                Compartilhar
-              </button>
-            </div>
-          </div>
+                <div className="p-5">
+                  <span className="flex items-center gap-1.5 text-xs text-gray-400">
+                    <Calendar size={13} />
+                    {new Date(noticia.data).toLocaleDateString("pt-BR")}
+                  </span>
+                  <h2 className="mt-3 text-xl font-bold text-[#1a1a2e] transition-colors group-hover:text-[#1a8c3a]">{noticia.titulo}</h2>
+                  <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-gray-500">{noticia.resumo}</p>
+                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#1a8c3a]">
+                    Ler notícia
+                    <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+                  </span>
+                </div>
+              </Link>
+            </article>
+          ))}
         </div>
       </div>
-    </div>
+    </main>
   );
 }

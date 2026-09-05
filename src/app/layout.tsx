@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import AssistentePortal from "@/components/ui/AssistentePortal";
+import AcessibilidadePortal from "@/components/ui/AcessibilidadePortal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,11 +20,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className={inter.className}>
+      <body className={`${inter.className} overflow-x-hidden`}>
         <Header />
+
         <main className="min-h-screen pt-16 md:pt-20">{children}</main>
         <Footer />
         <AssistentePortal />
+        <AcessibilidadePortal />
       </body>
     </html>
   );

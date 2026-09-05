@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, Calendar } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, CalendarDays, Newspaper, Sparkles } from "lucide-react";
 
 type Noticia = {
   id: string;
@@ -17,190 +17,231 @@ type Noticia = {
   destaque: boolean;
 };
 
-interface CarrosselNoticiasProps {
-  noticias: Noticia[];
-}
+const INTERVALO = 5000;
 
-export default function CarrosselNoticias({ noticias }: CarrosselNoticiasProps) {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [slidesToShow, setSlidesToShow] = useState(3);
-  const [isPaused, setIsPaused] = useState(false);
-  const isResizing = useRef(false);
+export default function CarrosselNoticias({ noticias }: { noticias: Noticia[] }) {
+  const [indiceAtual, setIndiceAtual] = useState(0);
+  const [porPagina, setPorPagina] = useState(3);
+  const [pausado, setPausado] = useState(false);
+  const trilhoRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<(HTMLAnchorElement | null)[]>([]);
+  const arrastando = useRef(false);
+  const arrastou = useRef(false);
+  const inicioX = useRef(0);
+  const inicioScroll = useRef(0);
 
-  const total = noticias.length;
-  const maxSlide = Math.max(0, total - slidesToShow);
+  const ultimoIndice = Math.max(0, noticias.length - porPagina);
 
-  // Detectar tamanho da tela
   useEffect(() => {
-    const handleResize = () => {
-      isResizing.current = true;
-      let newSlidesToShow = 3;
-      if (window.innerWidth < 640) newSlidesToShow = 1;
-      else if (window.innerWidth < 1024) newSlidesToShow = 2;
-      
-      setSlidesToShow(newSlidesToShow);
-      
-      const newMaxSlide = Math.max(0, total - newSlidesToShow);
-      if (currentSlide > newMaxSlide) {
-        setCurrentSlide(0);
-      }
-      
-      setTimeout(() => {
-        isResizing.current = false;
-      }, 100);
+    const atualizarQuantidade = () => {
+      const quantidade = window.innerWidth < 640 ? 1 : window.innerWidth < 1024 ? 2 : 3;
+      setPorPagina(quantidade);
+      setIndiceAtual((atual) => Math.min(atual, Math.max(0, noticias.length - quantidade)));
     };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [total, currentSlide]);
 
-  // Autoplay - PARA NO ÚLTIMO CARD
+    atualizarQuantidade();
+    window.addEventListener("resize", atualizarQuantidade);
+    return () => window.removeEventListener("resize", atualizarQuantidade);
+  }, [noticias.length]);
+
   useEffect(() => {
-    if (isPaused || total <= slidesToShow || isResizing.current) return;
+    const trilho = trilhoRef.current;
+    const card = cardsRef.current[indiceAtual];
+    if (!trilho || !card || arrastando.current) return;
+    trilho.scrollTo({ left: card.offsetLeft, behavior: "smooth" });
+  }, [indiceAtual, porPagina]);
 
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => {
-        if (prev >= maxSlide) {
-          return prev; // permanece no último
-        }
-        return prev + 1;
-      });
-    }, 3000);
+  useEffect(() => {
+    if (pausado || noticias.length <= porPagina) return;
 
-    return () => clearInterval(timer);
-  }, [isPaused, total, slidesToShow, maxSlide]);
+    const timer = window.setTimeout(() => {
+      setIndiceAtual((atual) => (atual >= ultimoIndice ? 0 : atual + 1));
+    }, INTERVALO);
 
-  const goToPrev = () => {
-    setCurrentSlide((prev) => Math.max(0, prev - 1));
+    return () => window.clearTimeout(timer);
+  }, [indiceAtual, noticias.length, pausado, porPagina, ultimoIndice]);
+
+  if (noticias.length === 0) return null;
+
+  const finalizarArraste = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!arrastando.current) return;
+    arrastando.current = false;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+
+    if (!arrastou.current) {
+      setPausado(false);
+      return;
+    }
+
+    const scroll = event.currentTarget.scrollLeft;
+    let maisProximo = 0;
+    let menorDistancia = Number.POSITIVE_INFINITY;
+    cardsRef.current.slice(0, ultimoIndice + 1).forEach((card, indice) => {
+      if (!card) return;
+      const distancia = Math.abs(card.offsetLeft - scroll);
+      if (distancia < menorDistancia) {
+        menorDistancia = distancia;
+        maisProximo = indice;
+      }
+    });
+    setIndiceAtual(maisProximo);
+    cardsRef.current[maisProximo]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
+    window.setTimeout(() => setPausado(false), 350);
   };
-
-  const goToNext = () => {
-    setCurrentSlide((prev) => Math.min(prev + 1, maxSlide));
-  };
-
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-  };
-
-  if (total === 0) return null;
 
   return (
-    <div className="relative w-full">
-      {/* Carrossel */}
+    <section
+      aria-roledescription="carrossel"
+      aria-label="Notícias da educação"
+      className="relative"
+      onMouseEnter={() => setPausado(true)}
+      onMouseLeave={() => {
+        if (!arrastando.current) setPausado(false);
+      }}
+      onFocus={() => setPausado(true)}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setPausado(false);
+      }}
+    >
+      <div className="mb-5 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#1a8c3a]/15 bg-[#e8f5e9] text-[#1a8c3a]">
+            <Newspaper size={20} />
+          </span>
+          <div>
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-[#1a8c3a]">Painel de notícias</p>
+            <p className="text-xs text-gray-400">Arraste para explorar</p>
+          </div>
+        </div>
+
+        <Link href="/noticias" className="hidden items-center gap-2 text-sm font-semibold text-[#1a8c3a] transition-colors hover:text-[#0d5c24] sm:flex">
+          Ver todas <ArrowRight size={16} />
+        </Link>
+      </div>
+
       <div
-        className="relative overflow-hidden"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
+        ref={trilhoRef}
+        className="news-track cursor-grab overflow-x-auto pb-5 active:cursor-grabbing"
+        onPointerDown={(event) => {
+          if (event.pointerType === "mouse" && event.button !== 0) return;
+          arrastando.current = true;
+          arrastou.current = false;
+          inicioX.current = event.clientX;
+          inicioScroll.current = event.currentTarget.scrollLeft;
+          setPausado(true);
+        }}
+        onPointerMove={(event) => {
+          if (!arrastando.current) return;
+          const distancia = event.clientX - inicioX.current;
+          if (!arrastou.current && Math.abs(distancia) <= 6) return;
+          if (!arrastou.current) event.currentTarget.setPointerCapture(event.pointerId);
+          arrastou.current = true;
+          event.preventDefault();
+          event.currentTarget.scrollLeft = inicioScroll.current - distancia;
+        }}
+        onPointerUp={finalizarArraste}
+        onPointerCancel={finalizarArraste}
+        onClickCapture={(event) => {
+          if (arrastou.current) {
+            event.preventDefault();
+            event.stopPropagation();
+            arrastou.current = false;
+          }
+        }}
+        onDragStart={(event) => event.preventDefault()}
       >
-        <div
-          className="flex gap-4 md:gap-6 transition-transform duration-500 ease-out"
-          style={{
-            transform: `translateX(-${currentSlide * (100 / slidesToShow)}%)`,
-          }}
-        >
-          {noticias.map((noticia) => (
+        <div className="flex gap-4 sm:gap-5 lg:gap-6">
+          {noticias.map((noticia, indice) => (
             <Link
               key={noticia.id}
+              ref={(elemento) => { cardsRef.current[indice] = elemento; }}
               href={`/noticias/${noticia.slug}`}
-              className="group flex-shrink-0"
-              style={{
-                flex: `0 0 calc(${100 / slidesToShow}% - 16px)`,
-              }}
+              draggable={false}
+              className="group relative flex min-h-[390px] shrink-0 basis-full select-none flex-col overflow-hidden rounded-2xl border border-gray-200/80 bg-white shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1.5 hover:border-[#1a8c3a]/30 hover:shadow-[0_18px_40px_rgba(26,140,58,0.13)] sm:basis-[calc((100%-1.25rem)/2)] lg:basis-[calc((100%-3rem)/3)]"
             >
-              <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-[#1a8c3a]/30 h-full">
-                <div className="relative h-40 sm:h-48 md:h-52 overflow-hidden">
-                  <Image
-                    src={`/images/noticias/${noticia.imagem}`}
-                    alt={noticia.titulo}
-                    width={400}
-                    height={300}
-                    className="w-full h-full object-cover"
-                  />
-                  {noticia.destaque && (
-                    <span className="absolute top-3 right-3 bg-[#f5a623] text-white text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 rounded-full">
-                      Destaque
-                    </span>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3 sm:p-4">
-                    <span className="text-white text-xs sm:text-sm flex items-center gap-1">
-                      <Calendar size={12} />
-                      {new Date(noticia.data).toLocaleDateString('pt-BR', {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric'
-                      })}
-                    </span>
-                  </div>
+              <div className="relative h-52 overflow-hidden sm:h-56">
+                <Image
+                  src={`/images/noticias/${noticia.imagem}`}
+                  alt={noticia.titulo}
+                  fill
+                  draggable={false}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0d5c24]/55 via-transparent to-transparent" />
+                <span className="absolute left-3 top-3 rounded-lg border border-white/50 bg-white/90 px-2.5 py-1 font-mono text-[9px] font-bold tracking-wider text-[#0d5c24] shadow-sm backdrop-blur-sm">
+                  NEWS {String(indice + 1).padStart(2, "0")}
+                </span>
+                {noticia.destaque && (
+                  <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-[#f5a623] px-2.5 py-1 text-[10px] font-bold text-white shadow-sm">
+                    <Sparkles size={11} /> Destaque
+                  </span>
+                )}
+                <span className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-[#092d14]/65 px-2.5 py-1 text-[10px] text-white backdrop-blur-sm">
+                  <CalendarDays size={12} className="text-[#f5c567]" />
+                  {new Date(noticia.data).toLocaleDateString("pt-BR")}
+                </span>
+              </div>
+
+              <div className="relative flex flex-1 flex-col p-5">
+                <span aria-hidden="true" className="absolute left-0 top-0 h-px w-0 bg-gradient-to-r from-[#1a8c3a] to-[#f5a623] transition-all duration-500 group-hover:w-full" />
+                <div className="mb-3 flex flex-wrap gap-1.5">
+                  {noticia.tags.slice(0, 2).map((tag) => (
+                    <span key={tag} className="rounded-full bg-[#e8f5e9] px-2.5 py-1 text-[10px] font-medium text-[#1a8c3a]">#{tag}</span>
+                  ))}
                 </div>
-                <div className="p-3 sm:p-5">
-                  <h3 className="text-sm sm:text-lg font-bold text-[#1a1a2e] group-hover:text-[#1a8c3a] transition-colors line-clamp-2">
-                    {noticia.titulo}
-                  </h3>
-                  <p className="text-gray-500 text-xs sm:text-sm mt-1 sm:mt-2 line-clamp-2">
-                    {noticia.resumo}
-                  </p>
-                  <div className="mt-2 sm:mt-4 flex items-center justify-between">
-                    <div className="flex flex-wrap gap-1">
-                      {noticia.tags.slice(0, 2).map((tag) => (
-                        <span key={tag} className="text-[9px] sm:text-xs bg-gray-100 text-gray-600 px-1.5 sm:px-2 py-0.5 rounded-full">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <span className="text-[#1a8c3a] text-xs sm:text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
-                      Ler mais
-                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform">
-                        <path d="M5 12h14" />
-                        <path d="M12 5l7 7-7 7" />
-                      </svg>
-                    </span>
-                  </div>
-                </div>
+                <h3 className="line-clamp-2 text-lg font-bold leading-snug text-[#1a1a2e] transition-colors group-hover:text-[#1a8c3a]">{noticia.titulo}</h3>
+                <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-gray-500">{noticia.resumo}</p>
+                <span className="mt-auto flex items-center justify-between border-t border-gray-100 pt-4 text-sm font-semibold text-[#1a8c3a]">
+                  Ler notícia
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#1a8c3a]/15 bg-[#e8f5e9] transition-all group-hover:translate-x-1 group-hover:bg-[#1a8c3a] group-hover:text-white">
+                    <ArrowRight size={15} />
+                  </span>
+                </span>
               </div>
             </Link>
           ))}
         </div>
       </div>
 
-      {/* Botões de navegação */}
-      {total > slidesToShow && (
-        <>
-          <button
-            onClick={goToPrev}
-            className={`absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-sm p-1.5 sm:p-2 rounded-full shadow-md hover:bg-white transition-all z-10 border border-gray-200 hover:border-[#1a8c3a]/30 ${
-              currentSlide === 0 ? "opacity-30 cursor-not-allowed" : "hover:scale-105"
-            }`}
-            disabled={currentSlide === 0}
-          >
-            <ChevronLeft size={20} className="text-[#1a1a2e]" />
-          </button>
-
-          <button
-            onClick={goToNext}
-            className={`absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-sm p-1.5 sm:p-2 rounded-full shadow-md hover:bg-white transition-all z-10 border border-gray-200 hover:border-[#1a8c3a]/30 ${
-              currentSlide >= maxSlide ? "opacity-30 cursor-not-allowed" : "hover:scale-105"
-            }`}
-            disabled={currentSlide >= maxSlide}
-          >
-            <ChevronRight size={20} className="text-[#1a1a2e]" />
-          </button>
-        </>
-      )}
-
-      {/* Indicadores */}
-      {total > slidesToShow && (
-        <div className="flex justify-center gap-1.5 sm:gap-2 mt-4 sm:mt-6">
-          {Array.from({ length: maxSlide + 1 }).map((_, index) => (
+      {ultimoIndice > 0 && (
+        <div className="flex items-center justify-center gap-2" aria-label={`Notícia ${indiceAtual + 1} de ${noticias.length}`}>
+          {Array.from({ length: ultimoIndice + 1 }).map((_, indice) => (
             <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`h-1.5 sm:h-2 rounded-full transition-all ${
-                index === currentSlide ? "w-6 sm:w-8 bg-[#1a8c3a]" : "w-1.5 sm:w-2 bg-gray-300 hover:bg-gray-400"
-              }`}
-            />
+              key={indice}
+              type="button"
+              onClick={() => setIndiceAtual(indice)}
+              aria-label={`Mostrar notícias a partir da posição ${indice + 1}`}
+              aria-current={indiceAtual === indice ? "true" : undefined}
+              className={`relative h-2 overflow-hidden rounded-full transition-all duration-300 ${indiceAtual === indice ? "w-14 bg-[#1a8c3a]/15" : "w-2 bg-gray-300 hover:bg-gray-400"}`}
+            >
+              {indiceAtual === indice && (
+                <span key={`${indiceAtual}-${pausado}`} className="block h-full bg-gradient-to-r from-[#1a8c3a] to-[#f5a623] motion-reduce:w-full" style={{ animation: `news-progress ${INTERVALO}ms linear forwards`, animationPlayState: pausado ? "paused" : "running" }} />
+              )}
+            </button>
           ))}
         </div>
       )}
-    </div>
+
+      <Link href="/noticias" className="mt-5 flex items-center justify-center gap-2 rounded-xl border border-[#1a8c3a]/15 bg-white px-4 py-3 text-sm font-semibold text-[#1a8c3a] sm:hidden">
+        Ver todas as notícias <ArrowRight size={16} />
+      </Link>
+
+      <style jsx>{`
+        .news-track {
+          scrollbar-width: none;
+          touch-action: pan-y;
+          user-select: none;
+          -webkit-user-select: none;
+        }
+        .news-track::-webkit-scrollbar { display: none; }
+        @keyframes news-progress {
+          from { width: 0%; }
+          to { width: 100%; }
+        }
+      `}</style>
+    </section>
   );
 }

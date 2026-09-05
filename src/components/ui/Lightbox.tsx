@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronLeft, ChevronRight, Images, X } from "lucide-react";
 import Image from "next/image";
 
 interface LightboxProps {
@@ -13,110 +13,86 @@ interface LightboxProps {
 }
 
 export default function Lightbox({ images, initialIndex, isOpen, onClose }: LightboxProps) {
-  // Usa o initialIndex diretamente no estado inicial
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
-  // Atualiza o índice quando o lightbox ABRE (usando uma técnica diferente)
-  // Em vez de usar useEffect com setState, usamos uma chave para forçar a reinicialização
-  // Mas vamos manter a navegação simples
-
   const goToPrev = useCallback(() => {
-    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    setCurrentIndex((current) => (current === 0 ? images.length - 1 : current - 1));
   }, [images.length]);
 
   const goToNext = useCallback(() => {
-    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    setCurrentIndex((current) => (current === images.length - 1 ? 0 : current + 1));
   }, [images.length]);
 
-  // Teclas
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!isOpen) return;
-      if (e.key === "Escape") onClose();
-      if (e.key === "ArrowLeft") goToPrev();
-      if (e.key === "ArrowRight") goToNext();
+    if (!isOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+      if (event.key === "ArrowLeft" && images.length > 1) goToPrev();
+      if (event.key === "ArrowRight" && images.length > 1) goToNext();
     };
+
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose, goToPrev, goToNext]);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [goToNext, goToPrev, images.length, isOpen, onClose]);
 
   if (!isOpen) return null;
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence>
       <motion.div
-        key="lightbox"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Galeria de imagens"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[999] bg-black/95 flex items-center justify-center p-4"
+        className="fixed inset-0 z-[999] flex flex-col bg-[#06130b]/95 p-3 backdrop-blur-md sm:p-5"
         onClick={onClose}
       >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-white/70 hover:text-white transition-colors z-10"
-        >
-          <X size={32} />
-        </button>
-
-        <div
-          className="relative w-full max-w-5xl max-h-[90vh]"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="relative w-full h-[80vh] flex items-center justify-center">
-            <Image
-              key={currentIndex}
-              src={images[currentIndex]}
-              alt={`Imagem ${currentIndex + 1}`}
-              fill
-              className="object-contain"
-              priority
-            />
+        <header className="mx-auto flex w-full max-w-7xl items-center justify-between pb-3 text-white">
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/10 text-[#4ade80]"><Images size={18} /></span>
+            <div><p className="text-sm font-semibold">Galeria do evento</p><p className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/40">Registro fotográfico</p></div>
           </div>
+          <button type="button" onClick={onClose} aria-label="Fechar galeria" className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/10 text-white/70 transition-colors hover:bg-white/20 hover:text-white"><X size={22} /></button>
+        </header>
 
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/60 text-sm bg-black/50 px-3 py-1 rounded-full">
-            {currentIndex + 1} / {images.length}
+        <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col" onClick={(event) => event.stopPropagation()}>
+          <div className="relative min-h-0 flex-1 overflow-hidden rounded-2xl border border-white/10 bg-black/30">
+            <AnimatePresence mode="wait">
+              <motion.div key={currentIndex} initial={{ opacity: 0.25, scale: 0.985 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="absolute inset-0">
+                <Image src={images[currentIndex]} alt={`Foto ${currentIndex + 1} de ${images.length}`} fill sizes="100vw" className="object-contain" preload />
+              </motion.div>
+            </AnimatePresence>
+
+            <span className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full border border-white/10 bg-black/50 px-3 py-1.5 font-mono text-[10px] text-white/75 backdrop-blur-md">{String(currentIndex + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}</span>
+
+            {images.length > 1 && (
+              <>
+                <button type="button" onClick={goToPrev} aria-label="Foto anterior" className="absolute left-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/35 text-white transition-all hover:scale-105 hover:bg-[#1a8c3a] sm:left-4"><ChevronLeft size={24} /></button>
+                <button type="button" onClick={goToNext} aria-label="Próxima foto" className="absolute right-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/35 text-white transition-all hover:scale-105 hover:bg-[#1a8c3a] sm:right-4"><ChevronRight size={24} /></button>
+              </>
+            )}
           </div>
 
           {images.length > 1 && (
-            <>
-              <button
-                onClick={(e) => { e.stopPropagation(); goToPrev(); }}
-                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white p-2 rounded-full backdrop-blur-sm transition-colors"
-              >
-                <ChevronLeft size={28} />
-              </button>
-              <button
-                onClick={(e) => { e.stopPropagation(); goToNext(); }}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white p-2 rounded-full backdrop-blur-sm transition-colors"
-              >
-                <ChevronRight size={28} />
-              </button>
-            </>
-          )}
-
-          {images.length > 1 && (
-            <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 flex gap-2">
-              {images.map((img, index) => (
-                <button
-                  key={index}
-                  onClick={(e) => { e.stopPropagation(); setCurrentIndex(index); }}
-                  className={`w-12 h-12 rounded-md overflow-hidden border-2 transition-all ${
-                    index === currentIndex ? "border-[#1a8c3a] scale-110" : "border-transparent opacity-50 hover:opacity-100"
-                  }`}
-                >
-                  <Image
-                    src={img}
-                    alt={`Miniatura ${index + 1}`}
-                    width={48}
-                    height={48}
-                    className="w-full h-full object-cover"
-                  />
+            <div className="lightbox-thumbs mt-3 flex shrink-0 justify-start gap-2 overflow-x-auto pb-1 sm:justify-center">
+              {images.map((image, index) => (
+                <button key={`${image}-${index}`} type="button" onClick={() => setCurrentIndex(index)} aria-label={`Ir para foto ${index + 1}`} aria-current={index === currentIndex ? "true" : undefined} className={`relative h-14 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition-all ${index === currentIndex ? "border-[#4ade80] opacity-100" : "border-transparent opacity-45 hover:opacity-90"}`}>
+                  <Image src={image} alt="" fill sizes="80px" className="object-cover" />
                 </button>
               ))}
             </div>
           )}
         </div>
+
+        <style jsx>{`.lightbox-thumbs { scrollbar-width: none; } .lightbox-thumbs::-webkit-scrollbar { display: none; }`}</style>
       </motion.div>
     </AnimatePresence>
   );
